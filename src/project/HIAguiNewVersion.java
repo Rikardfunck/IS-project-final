@@ -110,7 +110,7 @@ public class HIAguiNewVersion {
 					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: kundnummer, namn och adress");
 				}
 				textField_kundNummer.setText("");
 				textField_kundNamn.setText("");
@@ -137,7 +137,7 @@ public class HIAguiNewVersion {
 					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fältet.");
+					textArea.setText("Ange giltig information i fältet: kundnummer.");
 				}
 				textField_kundNummer.setText("");
 				textField_kundNamn.setText("");
@@ -154,11 +154,16 @@ public class HIAguiNewVersion {
 				String customerNbr = textField_kundNummer.getText();
 				
 				if (!customerNbr.equals("")){
-					controller.removeCustomerFromList(customerNbr);
-					textArea.setText("Kund har blivit borttagen ur registret.");
+					Customer removeThisCustomer = controller.removeCustomerFromList(customerNbr);
+					if (removeThisCustomer != null){
+						textArea.setText("Kund har blivit borttagen ur registret.");
+					}
+					else if (removeThisCustomer == null){
+						textArea.setText("Kund finns ej i registret.");
+					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fältet.");
+					textArea.setText("Ange giltig information i fältet: kundnummer.");
 				}
 				textField_kundNummer.setText("");
 				textField_kundNamn.setText("");
@@ -178,10 +183,15 @@ public class HIAguiNewVersion {
 				
 				if (!customerNbr.equals("") && !customerName.equals("") && !customerAddress.equals("")){
 					Customer foundCustomer = controller.changeCustomerInList(customerNbr, customerName, customerAddress);
-					textArea.setText("Uppdaterade uppgifter för kund med nummer: " + foundCustomer.getCustomerNbr() + "\n" + "Uppdaterat namn: " + foundCustomer.getName() + "\n"+ "Uppdaterad adress: " + foundCustomer.getAddress());
+					if (foundCustomer != null){
+						textArea.setText("Uppdaterade uppgifter för kund med nummer: " + foundCustomer.getCustomerNbr() + "\n" + "Uppdaterat namn: " + foundCustomer.getName() + "\n"+ "Uppdaterad adress: " + foundCustomer.getAddress());
+					}
+					else if (foundCustomer == null){
+						textArea.setText("Kund finns ej i registret.");
+					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: kundnummer, namn och adress.");
 				}
 				textField_kundNummer.setText("");
 				textField_kundNamn.setText("");
@@ -232,12 +242,12 @@ public class HIAguiNewVersion {
 						controller.addProductToList(addThisProduct);
 						textArea.setText("Produkt har blivit tillagd i registret.");
 					}	
-					else{
+					else if (controller.searchProductInList(name) != null){
 						textArea.setText("Produkt finns redan i registret.");
 					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: produktnamn, kategori och pris.");
 				}
 				textField_produktNamn.setText("");
 				textField_kategori.setText("");
@@ -256,14 +266,14 @@ public class HIAguiNewVersion {
 				if (!name.equals("")){
 					Product foundProduct = controller.searchProductInList(name);
 					if(foundProduct != null){
-						textArea.setText(foundProduct.getCategory() + "\n" + foundProduct.getPrice());
+						textArea.setText("Kategori: " + foundProduct.getCategory() + "\n" + "Pris: " + foundProduct.getPrice());
 					}
-					else{
+					else if (foundProduct == null){
 						textArea.setText("Produkt finns ej i registret.");
 					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fältet: produktnamn.");
 				}
 				textField_produktNamn.setText("");
 				textField_kategori.setText("");
@@ -280,11 +290,16 @@ public class HIAguiNewVersion {
 				String productName = textField_produktNamn.getText();
 				
 				if (!productName.equals("")){
-					controller.removeProductFromList(productName);
-					textArea.setText("Produkt är nu borttagen ur registret.");
+					Product removeThisProduct = controller.removeProductFromList(productName);
+					if (removeThisProduct != null){
+						textArea.setText("Produkt är nu borttagen ur registret.");
+					}
+					else if (removeThisProduct == null){
+						textArea.setText("Produkt finns ej i registret.");
+					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fältet: produktnamn.");
 				}
 				textField_produktNamn.setText("");
 				textField_kategori.setText("");
@@ -304,14 +319,19 @@ public class HIAguiNewVersion {
 				
 				if (!productName.equals("") && !category.equals("") && price != null){
 					Product foundProduct = controller.changeProductInList(productName, category, price);
-					textArea.setText("Produktens information har uppdaterats till: \n" + foundProduct.getProductName() + "\n" + foundProduct.getCategory() + "\n" + foundProduct.getPrice());
-//					textField_produktNamn.setText(" ");
-//					textField_kategori.setText(" ");
-//					textField_pris.setText(" ");
+					if (foundProduct != null){
+						textArea.setText("Produktens information har uppdaterats till: \n" + foundProduct.getProductName() + "\n" + foundProduct.getCategory() + "\n" + foundProduct.getPrice());
+					}
+					else if (foundProduct == null){
+						textArea.setText("Produkt finns ej i registret.");
+					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: produktnamn, kategori och pris.");
 				}
+				textField_produktNamn.setText("");
+				textField_kategori.setText("");
+				textField_pris.setText("");
 			}
 		});
 		btnndraProdukt.setBounds(630, 135, 131, 25);
@@ -347,15 +367,21 @@ public class HIAguiNewVersion {
 				
 				if (!serialNumber.equals("") && !productName.equals("")){
 					if (controller.searchIteminList(textField_serieNummer.getText()) == null){
-						controller.addItemToList(new Item (serialNumber, controller.searchProductInList(productName)));
-						textArea.setText("Exemplar har blivit tillagd till produkt.");
+						Product foundProduct = controller.searchProductInList(productName);
+						if (foundProduct != null){
+							controller.addItemToList(new Item (serialNumber, foundProduct));
+							textArea.setText("Exemplar har blivit tillagd till produkt.");
+						}
+						else if (foundProduct == null){
+							textArea.setText("Exemplar måste tillhöra en befintlig produkt, vänligen ange giltigt produktnamn i rutan.");
+						}
 					}
 					else{
 						textArea.setText("Exemplar finns redan i registret.");
 					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: serienummer och produktnamn.");
 				}
 				textField_serieNummer.setText("");
 			}
@@ -370,11 +396,16 @@ public class HIAguiNewVersion {
 				String serialNumber = textField_serieNummer.getText();
 				
 				if (!serialNumber.equals("")){
-					controller.removeItemFromList(serialNumber);
-					textArea.setText("Exemplar är borttaget.");
+					Item removeThisItem = controller.removeItemFromList(serialNumber);
+					if (removeThisItem != null){
+						textArea.setText("Exemplar är borttaget.");
+					}
+					else if (removeThisItem == null){
+						textArea.setText("Exemplar finns ej i registret.");
+					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fältet: serienummer.");
 				}
 				textField_serieNummer.setText("");
 			}
@@ -408,7 +439,7 @@ public class HIAguiNewVersion {
 							textArea.setText("Order har blivit tillagd till kund.");
 						}
 						else if (foundCustomer == null){
-							textArea.setText("Order måste tillhöra befintlig kund. vänligen ange ett giltig kundnummer i rutan.");
+							textArea.setText("Order måste tillhöra befintlig kund, vänligen ange ett giltig kundnummer i rutan.");
 						}
 					}
 					else if (controller.searchOrderinList(orderID) != null){
@@ -416,7 +447,7 @@ public class HIAguiNewVersion {
 					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: kundnummer, leveransdatum och ordernummer.");
 				}
 				textField_orderNummer.setText("");
 				textField_leveransDatum.setText("");
@@ -435,14 +466,14 @@ public class HIAguiNewVersion {
 				if (!orderID.equals("")){
 					Order foundOrder = controller.searchOrderinList(orderID);
 					if (foundOrder != null){
-						textArea.setText("Leveransdatum: " + foundOrder.getDeliveryDate() + "\n" + "Tillhörande kund: \n" + foundOrder.getCustomer().getCustomerNbr() + "\n" + foundOrder.getCustomer().getName() + "\n" + foundOrder.getCustomer().getAddress());
+						textArea.setText("Leveransdatum: " + foundOrder.getDeliveryDate() + "\n" + "Tillhörande kund: \n" + "Kundnummer: " + foundOrder.getCustomer().getCustomerNbr() + "\n" + "Namn: " + foundOrder.getCustomer().getName() + "\n" + "Adress: " + foundOrder.getCustomer().getAddress());
 					}
 					else if (foundOrder == null){
 						textArea.setText("Order finns ej i registret.");
 					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fältet: ordernummer.");
 				}
 				textField_orderNummer.setText("");
 			}
@@ -457,11 +488,16 @@ public class HIAguiNewVersion {
 				String orderID = textField_orderNummer.getText();
 				
 				if (!orderID.equals("")){
-					controller.removeOrderFromList(orderID);
-					textArea.setText("Order har blivit borttagen ur registret.");
+					Order removeThisOrder = controller.removeOrderFromList(orderID);
+					if (removeThisOrder != null){
+						textArea.setText("Order har blivit borttagen ur registret.");
+					}
+					else if (removeThisOrder == null){
+						textArea.setText("Order finns ej i registret.");
+					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälter: ordernummer.");
 				}
 				textField_orderNummer.setText("");
 			}
@@ -514,11 +550,11 @@ public class HIAguiNewVersion {
 								textArea.setText("Ej tillräckligt med varor i lager.");
 							}
 							else if (foundProduct == null){
-								textArea.setText("Orderrad måste innehålla en produkt, \n vänligen ange giltigt produktnamn.");
+								textArea.setText("Orderrad måste innehålla en produkt, vänligen ange giltigt produktnamn i rutan.");
 							}
 						}
 						else if (foundOrder == null){
-							textArea.setText("Orderrad måste tillhöra en order, \n vänligen ange gilitigt ordernummer.");;
+							textArea.setText("Orderrad måste tillhöra en order, vänligen ange gilitigt ordernummer i rutan.");;
 						}
 					}
 					else if (controller.searchOrderLineinList(idNumber) != null){
@@ -526,7 +562,7 @@ public class HIAguiNewVersion {
 					}
 				}
 				else {
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fälten: orderradsnummer, kvantitet, produktnamn och ordernummer.");
 				}
 				textField_orderRadsNummer.setText("");
 				textField_kvantitet.setText("");
@@ -565,18 +601,18 @@ public class HIAguiNewVersion {
 			public void actionPerformed(ActionEvent e) {
 				
 				String serialNumber = textField_serieNummer.getText();
-				Item foundItem = controller.searchIteminList(serialNumber);
 				
 				if (!serialNumber.equals("")){	
+					Item foundItem = controller.searchIteminList(serialNumber);
 					if (foundItem != null){
-						textArea.setText("Tillhörande produkt: \n" + foundItem.getProduct().getProductName() + "\n" + foundItem.getProduct().getCategory() + "\n" + foundItem.getProduct().getPrice());
+						textArea.setText("Tillhörande produkt: \n" + "Namn: " + foundItem.getProduct().getProductName() + "\n" + "Kategori: " + foundItem.getProduct().getCategory() + "\n" + "Pris: " + foundItem.getProduct().getPrice());
 					}
 					else if (foundItem == null){
 						textArea.setText("Exemplar finns ej i registret.");
 					}
 				}
 				else{
-					textArea.setText("Ange giltig information i fälten.");
+					textArea.setText("Ange giltig information i fältet: serienummer.");
 				}
 				textField_serieNummer.setText("");
 			}
@@ -601,8 +637,16 @@ public class HIAguiNewVersion {
 		JButton btnVisaTotalbelopp = new JButton("Visa totalbelopp");
 		btnVisaTotalbelopp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int totalAmount = controller.totalAmountForOrder(textField_orderNummer.getText());
-				textArea.setText("Totala priset för order är: \n" + totalAmount);
+				
+				String orderNumber = textField_orderNummer.getText();
+				
+				if (!orderNumber.equals("")){
+					int totalAmount = controller.totalAmountForOrder(orderNumber);
+					textArea.setText("Totala priset för order är: \n" + totalAmount);
+				}
+				else {
+					textArea.setText("Ange giltig information i fältet: ordernummer.");
+				}
 			}
 		});
 		btnVisaTotalbelopp.setBounds(251, 197, 131, 25);
