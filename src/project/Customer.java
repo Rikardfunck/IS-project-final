@@ -6,7 +6,6 @@ public class Customer {
 	private String name;
 	private String address;
 	
-	
 	public Customer (String customerNbr, String name, String address){
 		this.customerNbr=customerNbr;
 		this.name=name;

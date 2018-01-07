@@ -73,13 +73,7 @@ public class CustomerRegister {
 		return null;
 	}
 	public void addCustomerToList (Customer addThisCustomer){
-		
-//		if (addThisCustomer != null){
-//			// Write "Customer already exist" but in the GUI.
-//		}
-//		else{
 			this.customerList.add(addThisCustomer);
-//		}
 	}
 	public void addOrderToList (Order addThisOrder){
 			this.orderList.add(addThisOrder);

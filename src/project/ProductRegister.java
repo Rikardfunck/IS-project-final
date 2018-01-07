@@ -73,17 +73,6 @@ public class ProductRegister {
 		}
 		return null;
 	}
-
-//	public String findProductitem(Product itemProduct) {
-//		String tmp = "";
-//		tmp += "Produkten " + itemProduct.getProductName() + " innehåller följande serienummer: \n";
-//		for (Item temp : itemList) {
-//			if (temp.getProduct().equals(itemProduct)) {
-//				tmp += "Serienummer #" + temp.getSerialNumber() + "\n";
-//			}
-//		}
-//		return tmp;
-//	}
 	public int getItemQuantity (Product productName){
 		int quantity = 0;
 		for (Item foundItem : itemList){
